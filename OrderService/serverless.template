@@ -1,0 +1,59 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "OrderFlow - OrderService Lambda deployed via CloudFormation",
+
+  "Parameters": {
+    "ProductServiceUrl": {
+      "Type": "String",
+      "Description": "Base URL of the Product Service (Elastic Beanstalk)",
+      "Default": ""
+    }
+  },
+
+  "Resources": {
+    "OrderServiceFunction": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "OrderService",
+        "Runtime": "dotnet10",
+        "CodeUri": "",
+        "MemorySize": 512,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "Services__ProductServiceUrl": { "Ref": "ProductServiceUrl" }
+          }
+        },
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "ProxyResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/{proxy+}",
+              "Method": "ANY"
+            }
+          },
+          "RootResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/",
+              "Method": "ANY"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "Outputs": {
+    "ApiURL": {
+      "Description": "API Gateway endpoint URL",
+      "Value": {
+        "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+      }
+    }
+  }
+}

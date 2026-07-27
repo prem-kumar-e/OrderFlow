@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+.aws-sam/
+.DS_Store
+Thumbs.db
