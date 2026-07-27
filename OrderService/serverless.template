@@ -6,8 +6,11 @@
   "Parameters": {
     "ProductServiceUrl": {
       "Type": "String",
-      "Description": "Base URL of the Product Service (Elastic Beanstalk)",
-      "Default": ""
+      "Description": "Base URL of the Product Service (Elastic Beanstalk)"
+    },
+    "OrderEventsQueueUrl": {
+      "Type": "String",
+      "Description": "SQS Queue URL for OrderCreated events"
     }
   },
 
@@ -22,11 +25,13 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "Services__ProductServiceUrl": { "Ref": "ProductServiceUrl" }
+            "Services__ProductServiceUrl": { "Ref": "ProductServiceUrl" },
+            "Aws__OrderEventsQueueUrl": { "Ref": "OrderEventsQueueUrl" }
           }
         },
         "Policies": [
-          "AWSLambdaBasicExecutionRole"
+          "AWSLambdaBasicExecutionRole",
+          "AmazonSQSFullAccess"
         ],
         "Events": {
           "ProxyResource": {
