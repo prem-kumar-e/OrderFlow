@@ -35,6 +35,6 @@ jobs:
           dotnet lambda deploy-serverless \
             --template serverless.template \
             --stack-name orderflow-order-service \
-            --s3-bucket orderflow-lambda-deploys-prayer2026 \
+            --s3-bucket orderflow-lambda-deploys-210343 \
             --region ap-southeast-1 \
             --parameter-overrides "ProductServiceUrl=${{ vars.PRODUCT_SERVICE_URL }},OrderEventsQueueUrl=${{ vars.ORDER_EVENTS_QUEUE_URL }}"
